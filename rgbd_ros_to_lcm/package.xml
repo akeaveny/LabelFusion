@@ -1,0 +1,30 @@
+<?xml version="1.0"?>
+<package>
+  <name>rgbd_ros_to_lcm</name>
+  <version>0.0.0</version>
+  <description>The rgbd_ros_to_lcm package</description>
+
+  <maintainer email="swagner@draper.com">Syler Wagner</maintainer>
+
+  <license>BSD</license>
+
+  <url type="repository">http://github.com/MobileManipulation/rgbd_ros_to_lcm</url>
+
+  <author email="swagner@draper.com">Syler Wagner</author>
+
+  <buildtool_depend>catkin</buildtool_depend>
+
+  <build_depend>roscpp</build_depend>
+  <build_depend>sensor_msgs</build_depend>
+  <build_depend>image_geometry</build_depend>
+  <build_depend>message_filters</build_depend>
+  <build_depend>cv_bridge</build_depend>
+  <build_depend>pcl_ros</build_depend>
+
+  <run_depend>roscpp</run_depend>
+  <run_depend>sensor_msgs</run_depend>
+  <run_depend>image_geometry</run_depend>
+  <run_depend>message_filters</run_depend>
+  <run_depend>cv_bridge</run_depend>
+  <run_depend>pcl_ros</run_depend>
+</package>

@@ -1,0 +1,87 @@
+sudo ./docker_run.sh /home/robot/ARL_Dataset
+
+########################
+# run_create_data
+########################
+
+cd ~/labelfusion/modules/labelfusion/
+vim rendertrainingimages.py
+
+view.setFixedSize(672, 376)
+
+def setCameraInstrinsicsAsus(view):
+	principalX = 341.276
+	principalY = 175.296
+	focalLength = 338.546630859375 # fx = fy = focalLength
+	setCameraIntrinsics(view, principalX, principalY, focalLength)
+
+########################
+# camera config
+########################
+
+cd ~/labelfusion/config/
+vim bot_frames.cfg
+
+width = 672;
+height= 376;
+pinhole = [338.546630859375, 338.546630859375, 0, 341.276, 175.296]; # fx fy skew cx cy
+
+########################
+# ElasticFusion
+########################
+
+# for cuda
+
+cd ~/ElasticFusion/Core/src/
+vim CMakeLists.txt
+
+# delete the following line:
+# set(CUDA_ARCH_BIN "30 35 50 52 61" CACHE STRING "Specify 'real' GPU arch to build binaries for, BIN(PTX) format is supported. Example: 1.3 2.1(1.3) or 13 21(13)")
+
+cd ~/ElasticFusion/Core/
+rm -rf build && mkdir build && cd build && cmake ../src/ && make -j20
+
+# for camera params
+
+cd ~/ElasticFusion/GUI/src/
+vim MainController.cpp
+
+Resolution::getInstance(672, 376);
+Intrinsics::getInstance(338.546630859375, 338.546630859375, 341.276, 175.296);
+
+cd ~/ElasticFusion/GUI/
+rm -rf build && mkdir build && cd build && cmake ../src/ && make -j20
+
+########################
+# pipeline
+########################
+
+cd ~/labelfusion/data/logs/
+
+run_trim
+run_prep
+run_alignment_tool
+
+gr.rotateReconstructionToStandardOrientation()
+
+gr.segmentTable()
+gr.saveAboveTablePolyData()
+
+gr.launchObjectAlignment("mallet_1_grasp")
+gr.launchObjectAlignment("mallet_4_pound")
+gr.launchObjectAlignment("spatula_1_grasp")
+gr.launchObjectAlignment("spatula_5_support")
+gr.launchObjectAlignment("wooden_spoon_1_grasp")
+gr.launchObjectAlignment("wooden_spoon_3_scoop")
+gr.launchObjectAlignment("screwdriver_1_grasp")
+gr.launchObjectAlignment("screwdriver_2_screw")
+gr.launchObjectAlignment("garden_shovel_1_grasp")
+gr.launchObjectAlignment("garden_shovel_3_scoop")
+
+gr.saveRegistrationResults()
+
+########################
+# create data
+#######################
+
+run_create_data -d

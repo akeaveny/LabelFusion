@@ -42,7 +42,7 @@ class RenderTrainingImages(object):
         om.findObjectByName('grid').setProperty('Visible', False)
 
         view = self.view
-        view.setFixedSize(640, 480)
+        view.setFixedSize(672, 376)
         setCameraInstrinsicsAsus(view)
         # cameraToWorld = utils.getDefaultCameraToWorld()
         # setCameraTransform(view.camera(), cameraToWorld)
@@ -263,13 +263,33 @@ class RenderTrainingImages(object):
         target.close()
                 
     def renderAndSaveLabeledImages(self):
-        imageNumber = 1
-        while(self.setupImage(imageNumber, saveColorLabeledImages=True, saveLabeledImages=False, savePoses=False)):
-            imageNumber += 1
+        # imageNumber = 1
+        # while(self.setupImage(imageNumber, saveColorLabeledImages=True, saveLabeledImages=False, savePoses=False)):
+        #     imageNumber += 1
 
         imageNumber = 1
         while(self.setupImage(imageNumber, saveColorLabeledImages=False, saveLabeledImages=True, savePoses=True)):
             imageNumber += 1
+
+    ######################################################
+    ######################################################
+    def getProjectionPixel(self,verterx3d):
+       vertex3dList=[]
+       for i in range(verterx3d.GetNumberOfPoints()):
+           point = verterx3d.GetPoint(i)
+           vertex3dList.append(point)
+       vertex3dArray=np.array(vertex3dList)
+       vertex3dArray=vertex3dArray.transpose()
+       projectPixels=np.matmul(self.projectMatrix,vertex3dArray)
+       projectPixels=projectPixels/projectPixels[-1,:]
+       return projectPixels[:-1,:]
+
+    def setProjectMatrix(self):
+        principalX = 341.276
+        principalY = 175.296
+        fx=338.546630859375
+        fy=338.546630859375
+        return (np.array([[fx,0,principalX],[0,fy,principalY],[0,0,1]]))
 
 
 def getCameraTransform(camera):
@@ -310,12 +330,11 @@ def setCameraIntrinsics(view, principalX, principalY, focalLength):
     camera.SetWindowCenter(wcx, wcy)
     camera.SetViewAngle(viewAngle)
 
-
 def setCameraInstrinsicsAsus(view):
-    principalX = 320.0
-    principalY = 240.0
-    focalLength = 528.0
-    setCameraIntrinsics(view, principalX, principalY, focalLength)
+      		principalX = 341.276
+      		principalY = 175.296
+      		focalLength = 338.546630859375 # fx = fy = focalLength
+      		setCameraIntrinsics(view, principalX, principalY, focalLength)
 
 #######################################################################################
 

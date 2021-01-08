@@ -323,7 +323,7 @@ class DataCollectionPlanRunner(object):
     def __init__(self, dataCollection, robotSystem, targetFrames, configFilename=None):
         self.robotSystem = robotSystem
         self.dataCollection = dataCollection
-        self.timer = TimerCallback(targetFps=5)
+        self.timer = TimerCallback(targetFps=15)
         self.timer.callback = self.callback
         self.targetFrames = targetFrames
         self.counter = 0

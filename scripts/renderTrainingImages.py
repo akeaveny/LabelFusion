@@ -15,6 +15,12 @@ import labelfusion.utils
 from labelfusion.rendertrainingimages import RenderTrainingImages
 import os
 
+def setCameraInstrinsicsAsus(view):
+      		principalX = 653.5696411132812
+      		principalY = 336.8636779785156
+      		focalLength = 678.25927734375 # fx = fy = focalLength
+      		setCameraIntrinsics(view, principalX, principalY, focalLength)
+ 
 if __name__ == '__main__':
     print os.getcwd()
     if os.path.isfile(os.path.join(os.getcwd(), "images/0000000001_labels.png")):

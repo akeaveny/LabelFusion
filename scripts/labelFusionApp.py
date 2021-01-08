@@ -24,7 +24,7 @@ def initDepthPointCloud(imageManager, view):
     openniDepthPointCloud.addToView(view)
     om.addToObjectModel(openniDepthPointCloud, parentObj=om.findObjectByName('sensors'))
     openniDepthPointCloud.setProperty('Visible', True)
-    openniDepthPointCloud.setProperty('Target FPS', 30)
+    openniDepthPointCloud.setProperty('Target FPS', 15)
     return openniDepthPointCloud
 
 def newCameraView(imageManager, channelName='OPENNI_FRAME', cameraName='OPENNI_FRAME_LEFT', viewName='OpenNI Frame'):

@@ -1,0 +1,25 @@
+<?xml version="1.0"?>
+<launch>
+
+  <node type="rviz" name="rviz" pkg="rviz" args="-d $(find rgbd_ros_to_lcm)/rviz/rgbd_ros_to_lcm.rviz" />
+
+  <node name="lcm_republisher" pkg="rgbd_ros_to_lcm" type="lcm_republisher" output="screen" respawn="false" >
+    
+    <rosparam subst_value="true">      
+      # input parameters
+      subscribe_point_cloud: false
+      rgb_topic: /zed/zed_node/rgb/image_rect_color
+      depth_topic: /zed/zed_node/depth/depth_registered
+      cloud_topic: /zed/zed_node/point_cloud/cloud_registered
+
+      # output parameters
+      output_lcm_channel: "OPENNI_FRAME"
+      compress_rgb: true
+      compress_depth: true
+
+      debug_print_statements: true
+    </rosparam>
+  </node>
+</launch>
+
+
